@@ -4,6 +4,7 @@ var watchify     = require('watchify');
 var gulp         = require('gulp');
 var source       = require('vinyl-source-stream');
 var config       = require('../config').browserify;
+var plumber = require("gulp-plumber");
 
 gulp.task('browserify', function(callback) {
 
@@ -25,6 +26,8 @@ gulp.task('browserify', function(callback) {
     var bundle = function() {
       return bundler
         .bundle()
+        .on('error', function(err){ console.error(err.toString()); })
+        .pipe(plumber())
         // Use vinyl-source-stream to make the
         // stream gulp compatible. Specifiy the
         // desired output filename here.
