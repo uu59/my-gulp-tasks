@@ -1,7 +1,8 @@
+var path = require("path");
 var srcDir = "./src";
-var destDir = "./build";
+var destDir = path.resolve("./build");
 
-module.exports = {
+module.exports = config = {
   browserSync: {
     server: {
       baseDir: [destDir, srcDir] // including srcDir for sourcemap
@@ -11,13 +12,18 @@ module.exports = {
     ]
   },
   browserify: {
-    debug: true,
-    extensions: [".coffee", ".js"],
-    bundleConfigs: [{
-      entries: srcDir + "/js/app.js",
-      dest: destDir,
+    transforms: {
+      babelify: {
+        // http://babeljs.io/docs/usage/options/
+        experimental: false
+      }
+    },
+    bundleConfigs: {
+      extensions: [".coffee", ".js"],
+      entries: [srcDir + "/js/app.js"],
+      destDir: destDir,
       outputName: "dist.js"
-    }]
+    }
   },
   stylus: {
     src: srcDir + "/styl/**/!(_)*",
